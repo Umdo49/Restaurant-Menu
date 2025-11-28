@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <!-- Mobil uyumluluk için viewport meta etiketi -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Munzur Baba Restaurant - Eşsiz Lezzet Durağınız</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (İkonlar için) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Tailwind'in varsayılan font ailesini Inter ile genişletiyoruz */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Ana arka plan rengi */
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden; /* Yatay kaydırmayı engelle */
+        }
+
+        /* --- Munzur Suyu Arka Plan Animasyonu (Daha Belirsiz) --- */
+        #background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            overflow: hidden;
+            background: #000; /* Siyah zemin */
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231e3a8a' fill-opacity='0.3' d='M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,202.7C672,224,768,224,864,208C960,192,1056,160,1152,149.3C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: 50% 100px;
+            animation: flow 15s linear infinite;
+        }
+
+        .wave:nth-child(1) {
+            animation-delay: 0s;
+            opacity: 0.05; /* Opasite azaltıldı */
+            animation-duration: 10s;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%233b82f6' fill-opacity='0.3' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,256C672,245,768,203,864,186.7C960,171,1056,181,1152,170.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            opacity: 0.1; /* Opasite azaltıldı */
+            animation-duration: 20s;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -3s;
+            opacity: 0.15; /* Opasite azaltıldı */
+            animation-duration: 12s;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.3' d='M0,64L48,90.7C96,117,192,171,288,181.3C384,192,480,160,576,133.3C672,107,768,85,864,106.7C960,128,1056,192,1152,208C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        @keyframes flow {
+            0% {
+                background-position-x: 0;
+            }
+            100% {
+                background-position-x: 1000px;
+            }
+        }
+
+        /* Kurumsal görünüm için glow kaldırıldı */
+        .glow-text {
+            text-shadow: none;
+        }
+
+        /* İçeriklerin animasyonun üzerinde kalması için */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Form elemanları için kurumsal stil */
+        .form-input {
+            background-color: rgba(26, 32, 44, 0.7); /* Koyu gri/mavi zemin */
+            border: 1px solid #4A5568; /* Gri border */
+            color: #ffffff;
+        }
+        .form-input::placeholder {
+            color: #A0AEC0;
+        }
+        .form-input:focus {
+            background-color: rgba(45, 55, 72, 0.9);
+            border-color: #facc15; /* Sarı */
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.5);
+        }
+
+        /* Yeni: Galeri için yatay kaydırma stilleri */
+        .horizontal-scroll-wrapper {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 1.5rem; /* Kaydırma çubuğu için boşluk (gizlense bile) */
+            
+            /* Kaydırma çubuğunu gizle (Modern tarayıcılar) */
+            scrollbar-width: none; /* Firefox */
+        }
+        .horizontal-scroll-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .gallery-item {
+            display: inline-block;
+            width: 300px; /* Sabit genişlik */
+            white-space: normal; /* İçeriğin normal akışa dönmesi */
+            margin-right: 1.5rem;
+            vertical-align: top;
+        }
+
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Arka Plan Animasyon Alanı -->
+    <div id="background-animation">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <!-- İçerik Alanı -->
+    <div class="content-wrapper">
+
+        <!-- HEADER -->
+        <header class="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm shadow-lg">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <!-- Logo -->
+                    <a href="#hero" class="text-3xl font-bold text-yellow-400"> <!-- glow-text kaldırıldı -->
+                        Munzur Baba
+                    </a>
+
+                    <!-- Desktop Menü -->
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="#hero" class="text-white hover:text-yellow-400 transition duration-300 font-medium px-3 py-2 rounded-md">Ana Sayfa</a>
+                        <a href="#about" class="text-white hover:text-yellow-400 transition duration-300 font-medium px-3 py-2 rounded-md">Hakkımızda</a>
+                        <a href="menu.php" class="text-white hover:text-yellow-400 transition duration-300 font-medium px-3 py-2 rounded-md">Menü</a> <!-- Güncellendi -->
+                        <a href="#gallery" class="text-white hover:text-yellow-400 transition duration-300 font-medium px-3 py-2 rounded-md">Galeri</a>
+                        <a href="#team" class="text-white hover:text-yellow-400 transition duration-300 font-medium px-3 py-2 rounded-md">Ekibimiz</a>
+                        <a href="#contact" class="text-white hover:text-yellow-400 transition duration-300 font-medium px-3 py-2 rounded-md">İletişim</a>
+                        <a href="#reservation" class="text-black bg-yellow-500 hover:bg-yellow-600 transition duration-300 font-bold px-5 py-2 rounded-full shadow-md"> <!-- Renk Güncellendi -->
+                            Rezervasyon
+                        </a>
+                    </nav>
+
+                    <!-- Mobil Menü Butonu -->
+                    <div class="md:hidden">
+                        <button id="menu-button" class="text-white hover:text-yellow-400 transition duration-300">
+                            <i class="fas fa-bars fa-2x"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobil Menü (Gizli) -->
+            <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90">
+                <a href="#hero" class="block text-white text-center text-lg py-3 hover:bg-blue-900 transition duration-300">Ana Sayfa</a>
+                <a href="#about" class="block text-white text-center text-lg py-3 hover:bg-blue-900 transition duration-300">Hakkımızda</a>
+                <a href="menu.php" class="block text-white text-center text-lg py-3 hover:bg-blue-900 transition duration-300">Menü</a> <!-- Güncellendi -->
+                <a href="#gallery" class="block text-white text-center text-lg py-3 hover:bg-blue-900 transition duration-300">Galeri</a>
+                <a href="#team" class="block text-white text-center text-lg py-3 hover:bg-blue-900 transition duration-300">Ekibimiz</a>
+                <a href="#contact" class="block text-white text-center text-lg py-3 hover:bg-blue-900 transition duration-300">İletişim</a>
+                <a href="#reservation" class="block text-yellow-400 text-center text-lg font-bold py-4 hover:bg-blue-900 transition duration-300">Rezervasyon</a>
+            </div>
+        </header>
+
+        <!-- HERO BÖLÜMÜ -->
+        <section id="hero" class="min-h-screen flex items-center justify-center text-center px-4 pt-20">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 text-yellow-400"> <!-- Stil değişti -->
+                    Munzur Baba Restaurant
+                </h1>
+                <p class="text-xl md:text-2xl text-blue-100 mb-8 font-light">
+                    Munzur'un Serinliği, Lezzetin Eşsiz Sıcaklığıyla Buluşuyor.
+                </p>
+                <a href="#reservation" class="text-black bg-yellow-500 hover:bg-yellow-600 transition-all duration-300 font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:scale-105"> <!-- Renk Güncellendi -->
+                    Hemen Yerinizi Ayırtın
+                </a>
+            </div>
+        </section>
+
+        <!-- HAKKIMIZDA BÖLÜMÜ (Öne Alındı) -->
+        <section id="about" class="py-20 md:py-32">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-full md:w-1/2">
+                        <img src="m1.webp" alt="Mekan Görseli" class="rounded-lg shadow-xl w-full object-cover border-4 border-gray-800"> <!-- Stil değişti -->
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-yellow-400">Bizim Hikayemiz </h2> <!-- glow-text kaldırıldı -->
+                        <p class="text-lg text-blue-100 mb-4">
+                            Munzur Baba Restaurant olarak, adımızı ve ilhamımızı yanı başımızda akan kutsal Munzur suyundan alıyoruz. 
+                            Misafirlerimize sadece bir yemek değil, aynı zamanda nehrin huzurunu ve doğanın enerjisini sunuyoruz.
+                        </p>
+                        <p class="text-lg text-blue-100">
+                            Mavi, beyaz ve siyahın asaletini, sıcak sarı ışıklandırmalarımızın samimiyetiyle birleştirerek, 
+                            unutulmaz anlar yaşatmak için buradayız. Her tabakta yöresel lezzetleri modern bir dokunuşla sunuyoruz.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENÜ ÖNE ÇIKANLAR BÖLÜMÜ -->
+        <section id="menu" class="py-20 md:py-32 bg-black bg-opacity-50">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-yellow-400 mb-6">Menümüzden Öne Çıkanlar</h2> <!-- glow-text kaldırıldı -->
+                    <p class="text-lg text-blue-200 mb-8">Eşsiz lezzetlerimizi keşfedin.</p>
+                    <a href="menu.php" class="text-black bg-yellow-500 hover:bg-yellow-600 transition-all duration-300 font-bold text-lg px-8 py-3 rounded-full shadow-lg transform hover:scale-105">
+                        Tüm Menüyü Gör
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Menü Kartı 1 -->
+                    <div class="bg-gray-900 rounded-lg shadow-lg overflow-hidden transition duration-300 hover:border-yellow-500 border border-gray-700"> <!-- Stil değişti -->
+                        <img src="alabalık.webp" alt="Munzur Alabalık" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-yellow-400 mb-2">Munzur Alabalık</h3>
+                            <p class="text-blue-200">Nehrin taptaze sularından sofranıza, özel sosumuzla servis edilir.</p>
+                        </div>
+                    </div>
+                    <!-- Menü Kartı 2 -->
+                    <div class="bg-gray-900 rounded-lg shadow-lg overflow-hidden transition duration-300 hover:border-yellow-500 border border-gray-700"> <!-- Stil değişti -->
+                        <img src="özel kebap.jpeg" alt="Özel Kebap" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-yellow-400 mb-2">Özel Munzur Kebabı</h3>
+                            <p class="text-blue-200">Bölgemizin baharatlarıyla harmanlanmış, odun ateşinde pişmiş eşsiz lezzet.</p>
+                        </div>
+                    </div>
+                    <!-- Menü Kartı 3 -->
+                    <div class="bg-gray-900 rounded-lg shadow-lg overflow-hidden transition duration-300 hover:border-yellow-500 border border-gray-700"> <!-- Stil değişti -->
+                        <img src="serpme kahvaltı.png" alt="Serpme Kahvaltı" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-yellow-400 mb-2">Zengin Serpme Kahvaltı</h3>
+                            <p class="text-blue-200">Munzur manzarasına karşı, yöresel ve taze ürünlerle dolu bir ziyafet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALERİ BÖLÜMÜ (Güncellendi) -->
+        <section id="gallery" class="py-20 md:py-32">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-yellow-400">Galerimiz</h2> <!-- glow-text kaldırıldı -->
+
+                <!-- Fotoğraf Galerisi -->
+                <h3 class="text-3xl font-semibold text-white mb-6">Fotoğraflar</h3>
+                <div class="horizontal-scroll-wrapper">
+                    <!-- Galeri Öğesi (Fotoğraf) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <img src="m3.jpg" alt="Munzur Manzarası" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Eşsiz Manzara</h4>
+                            <p class="text-blue-200 text-sm">Restoranımızdan Munzur Nehri'nin büyüleyici görünümü.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Galeri Öğesi (Fotoğraf) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <img src="iç mekan.jpg" alt="İç Mekan" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Sıcak Atmosfer</h4>
+                            <p class="text-blue-200 text-sm">Sıcak sarı ışıklandırmalarla donatılmış kurumsal ve samimi iç mekanımız.</p>
+                        </div>
+                    </div>
+                    <!-- Galeri Öğesi (Fotoğraf) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <img src="m2.webp" alt="Akşam Yemeği" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Akşam Ziyafeti</h4>
+                            <p class="text-blue-200 text-sm">Dostlarınızla keyifli akşam yemekleri için ideal.</p>
+                        </div>
+                    </div>
+                    <!-- Galeri Öğesi (Fotoğraf) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <img src="özel kebap.jpeg" alt="Lezzetli Kebaplar" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Özel Kebaplarımız</h4>
+                            <p class="text-blue-200 text-sm">Usta şeflerimizin elinden çıkan özel kebap sunumları.</p>
+                        </div>
+                    </div>
+                    <!-- Galeri Öğesi (Fotoğraf) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <img src="alabalık.webp" alt="Alabalık Sunumu" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Taze Alabalık</h4>
+                            <p class="text-blue-200 text-sm">Günün her saati taze Munzur alabalığı servisimiz.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Galerisi (Yeni Eklendi) -->
+                <h3 class="text-3xl font-semibold text-white mt-16 mb-6">Videolar</h3>
+                <div class="horizontal-scroll-wrapper">
+                    <!-- Galeri Öğesi (Video) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <div class="w-full h-56 bg-black flex items-center justify-center">
+                            <i class="far fa-play-circle fa-4x text-yellow-400"></i>
+                            <!-- Gerçek bir video için <video> veya <iframe> etiketi kullanılabilir -->
+                            <!-- <iframe class="w-full h-56" src="https://www.youtube.com/embed/..." frameborder="0" allowfullscreen></iframe> -->
+                        </div>
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Tanıtım Filmimiz</h4>
+                            <p class="text-blue-200 text-sm">Restoranımızın ve Munzur'un güzelliklerini anlatan kısa film.</p>
+                        </div>
+                    </div>
+                    <!-- Galeri Öğesi (Video) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <div class="w-full h-56 bg-black flex items-center justify-center">
+                            <i class="far fa-play-circle fa-4x text-yellow-400"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Şefin Mutfağından</h4>
+                            <p class="text-blue-200 text-sm">Baş aşçımızın özel tariflerini paylaştığı anlar.</p>
+                        </div>
+                    </div>
+                    <!-- Galeri Öğesi (Video) -->
+                    <div class="gallery-item bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                        <div class="w-full h-56 bg-black flex items-center justify-center">
+                            <i class="far fa-play-circle fa-4x text-yellow-400"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Misafir Yorumları</h4>
+                            <p class="text-blue-200 text-sm">Değerli misafirlerimizin deneyimleri.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EKİBİMİZ BÖLÜMÜ (Yeni Eklendi) -->
+        <section id="team" class="py-20 md:py-32 bg-black bg-opacity-50">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-yellow-400">Profesyonel Ekibimiz</h2> <!-- glow-text kaldırıldı -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <!-- Ekip Üyesi 1 -->
+                    <div class="bg-gray-900 rounded-lg shadow-lg p-6 text-center transition duration-300 hover:border-yellow-500 border border-gray-700"> <!-- Stil değişti -->
+                        <img src="https://placehold.co/400x400/facc15/000000?text=Şef" alt="Baş Aşçı" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-yellow-400 object-cover">
+                        <h3 class="text-2xl font-bold text-yellow-400 mb-1">Ahmet Şef</h3>
+                        <p class="text-blue-200 text-lg mb-3">Baş Aşçı</p>
+                        <p class="text-blue-100">20 yıllık tecrübesiyle yöresel lezzetleri modern mutfakla birleştiriyor.</p>
+                    </div>
+                    <!-- Ekip Üyesi 2 -->
+                    <div class="bg-gray-900 rounded-lg shadow-lg p-6 text-center transition duration-300 hover:border-yellow-500 border border-gray-700"> <!-- Stil değişti -->
+                        <img src="https://placehold.co/400x400/1e3a8a/FFFFFF?text=Yönetici" alt="Restoran Yöneticisi" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-yellow-400 object-cover">
+                        <h3 class="text-2xl font-bold text-yellow-400 mb-1">Hıdır Bey</h3>
+                        <p class="text-blue-200 text-lg mb-3">Restoran Yöneticisi</p>
+                        <p class="text-blue-100">Misafirlerimizin konforu ve mutluluğu için her detayı titizlikle yönetir.</p>
+                    </div>
+                    <!-- Ekip Üyesi 3 -->
+                    <div class="bg-gray-900 rounded-lg shadow-lg p-6 text-center transition duration-300 hover:border-yellow-500 border border-gray-700"> <!-- Stil değişti -->
+                        <img src="https://placehold.co/400x400/facc15/000000?text=Ekip" alt="Servis Ekibi Lideri" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-yellow-400 object-cover">
+                        <h3 class="text-2xl font-bold text-yellow-400 mb-1">Erdoğan bey</h3>
+                        <p class="text-blue-200 text-lg mb-3">Servis Ekibi Lideri</p>
+                        <p class="text-blue-100">Güler yüzlü ekibimizle sizlere kusursuz bir servis deneyimi sunar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REZERVASYON BÖLÜMÜ -->
+        <section id="reservation" class="py-20 md:py-32 bg-blue-950 bg-opacity-70">
+            <div class="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 text-yellow-400">Rezervasyon Yapın</h2> <!-- glow-text kaldırıldı -->
+                <p class="text-center text-lg text-blue-200 mb-10">
+                    Formu doldurun, bilgilerinizi kontrol etmek için WhatsApp'a yönlendirelim.
+                </p>
+                
+                <!-- Rezervasyon Formu -->
+                <form id="reservationForm" class="space-y-6">
+                    <div>
+                        <label for="res-name" class="block text-sm font-medium text-blue-100 mb-2">Ad Soyad</label>
+                        <input type="text" id="res-name" name="name" required
+                               class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="res-phone" class="block text-sm font-medium text-blue-100 mb-2">Telefon Numarası</label>
+                            <input type="tel" id="res-phone" name="phone" required
+                                   placeholder="05XX XXX XX XX"
+                                   class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                        </div>
+                        <div>
+                            <label for="res-guests" class="block text-sm font-medium text-blue-100 mb-2">Kişi Sayısı</label>
+                            <input type="number" id="res-guests" name="guests" required min="1"
+                                   class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="res-date" class="block text-sm font-medium text-blue-100 mb-2">Tarih</label>
+                            <input type="date" id="res-date" name="date" required
+                                   class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                        </div>
+                        <div>
+                            <label for="res-time" class="block text-sm font-medium text-blue-100 mb-2">Saat</label>
+                            <input type="time" id="res-time" name="time" required
+                                   class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="res-notes" class="block text-sm font-medium text-blue-100 mb-2">Özel Notlarınız (İsteğe bağlı)</label>
+                        <textarea id="res-notes" name="notes" rows="4"
+                                  placeholder="Örn: Pencere kenarı bir masa rica ediyorum."
+                                  class="w-full px-4 py-3 rounded-lg form-input transition duration-300"></textarea>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                                class="w-full text-black bg-yellow-500 hover:bg-yellow-600 transition-all duration-300 font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:scale-105"> <!-- Renk Güncellendi -->
+                            <i class="fab fa-whatsapp mr-2"></i> WhatsApp ile Rezervasyon Yap
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- İLETİŞİM & HARİTA BÖLÜMÜ (Yeni Eklendi) -->
+        <section id="contact" class="py-20 md:py-32">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-yellow-400">Bize Ulaşın & Konum</h2> <!-- glow-text kaldırıldı -->
+                <div class="flex flex-col lg:flex-row gap-12">
+                    <!-- İletişim Formu -->
+                    <div class="w-full lg:w-1/2">
+                        <h3 class="text-3xl font-bold text-white mb-6">Genel Sorularınız İçin</h3>
+                        <form id="contactForm" class="space-y-6">
+                            <div>
+                                <label for="contact-name" class="block text-sm font-medium text-blue-100 mb-2">Ad Soyad</label>
+                                <input type="text" id="contact-name" name="contact-name" required
+                                       class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                            </div>
+                            <div>
+                                <label for="contact-email" class="block text-sm font-medium text-blue-100 mb-2">E-posta</label>
+                                <input type="email" id="contact-email" name="contact-email" required
+                                       class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                            </div>
+                            <div>
+                                <label for="contact-subject" class="block text-sm font-medium text-blue-100 mb-2">Konu</label>
+                                <input type="text" id="contact-subject" name="contact-subject" required
+                                       class="w-full px-4 py-3 rounded-lg form-input transition duration-300">
+                            </div>
+                            <div>
+                                <label for="contact-message" class="block text-sm font-medium text-blue-100 mb-2">Mesajınız</label>
+                                <textarea id="contact-message" name="contact-message" rows="5" required
+                                          class="w-full px-4 py-3 rounded-lg form-input transition duration-300"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit"
+                                        class="w-full text-black bg-yellow-500 hover:bg-yellow-600 transition-all duration-300 font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:scale-105"> <!-- Renk Güncellendi -->
+                                    Mesajı Gönder
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Harita ve Bilgiler -->
+                    <div class="w-full lg:w-1/2">
+                        <h3 class="text-3xl font-bold text-white mb-6">Konumumuz</h3>
+                        <!-- Google Harita Embed -->
+                        <div class="rounded-xl overflow-hidden shadow-2xl border-2 border-blue-800">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6192.2487455155715!2d39.54451605199863!3d39.103638497166884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4071221ac9936a23%3A0xc9b4db513dd15fe5!2sMunzur%20Baba%20Restorant!5e0!3m2!1str!2str!4v1762264813235!5m2!1str!2str" 
+                                width="100%" 
+                                height="400" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                        <!-- İletişim Bilgileri -->
+                        <div class="mt-8 space-y-4 text-lg">
+                             <div class="flex items-center text-blue-100">
+                                <i class="fas fa-map-marker-alt w-8 text-yellow-400 text-xl"></i>
+                                <span>568. Sok., 1/1, Tunceli, Tunceli Merkez , Cumhuriyet Mah.</span>
+                            </div>
+                            <div class="flex items-center text-blue-100">
+                                <i class="fas fa-phone-alt w-8 text-yellow-400 text-xl"></i>
+                                <span>+90 555 123 45 67</span>
+                            </div>
+                            <div class="flex items-center text-blue-100">
+                                <i class="fas fa-envelope w-8 text-yellow-400 text-xl"></i>
+                                <span>info@munzurbaba.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-black py-16">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+                    <!-- Footer Sol Taraf (Logo/İsim) -->
+                    <div>
+                        <h3 class="text-3xl font-bold text-yellow-400 mb-4"> <!-- glow-text kaldırıldı -->
+                            Munzur Baba
+                        </h3>
+                        <p class="text-blue-200">
+                            Doğanın kalbinde, lezzetin zirvesinde. Munzur'un eşsiz manzarası eşliğinde unutulmaz bir deneyim.
+                        </p>
+                    </div>
+
+                    <!-- Footer Orta (Hızlı Bağlantılar) -->
+                    <div>
+                        <h4 class="text-xl font-bold text-white mb-4">Hızlı Bağlantılar</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#hero" class="text-blue-200 hover:text-yellow-400 transition">Ana Sayfa</a></li>
+                            <li><a href="#about" class="text-blue-200 hover:text-yellow-400 transition">Hakkımızda</a></li>
+                            <li><a href="menu.php" class="text-blue-200 hover:text-yellow-400 transition">Menü</a></li> <!-- Güncellendi -->
+                            <li><a href="#gallery" class="text-blue-200 hover:text-yellow-400 transition">Galeri</a></li>
+                            <li><a href="#team" class="text-blue-200 hover:text-yellow-400 transition">Ekibimiz</a></li>
+                            <li><a href="#contact" class="text-blue-200 hover:text-yellow-400 transition">İletişim</a></li>
+                            <li><a href="#reservation" class="text-blue-200 hover:text-yellow-400 transition">Rezervasyon</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer Sağ Taraf (İletişim) -->
+                    <div>
+                        <h4 class="text-xl font-bold text-white mb-4">Bize Ulaşın</h4>
+                        <ul class="space-y-3 text-blue-200">
+                            <li class="flex items-center justify-center md:justify-start">
+                                <i class="fas fa-map-marker-alt w-6 text-yellow-400"></i>
+                                <span>568. Sok., 1/1, Tunceli, Tunceli Merkez , Cumhuriyet Mah.</span>
+                            </li>
+                            <li class="flex items-center justify-center md:justify-start">
+                                <i class="fas fa-phone-alt w-6 text-yellow-400"></i>
+                                <span>+90 555 123 45 67</span>
+                            </li>
+                            <li class="flex items-center justify-center md:justify-start">
+                                <i class="fas fa-envelope w-6 text-yellow-400"></i>
+                                <span>info@munzurbaba.com</span>
+                            </li>
+                        </ul>
+                        <!-- Sosyal Medya İkonları -->
+                        <div class="flex justify-center md:justify-start space-x-5 mt-6">
+                            <a href="#" class="text-white hover:text-yellow-400 text-2xl transition"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-white hover:text-yellow-400 text-2xl transition"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-white hover:text-yellow-400 text-2xl transition"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="border-t border-blue-900 mt-12 pt-8 text-center text-blue-300">
+                    &copy; 2025 Munzur Baba Restaurant. Tüm hakları saklıdır.
+                </div>
+            </div>
+        </footer>
+
+    </div> <!-- .content-wrapper sonu -->
+
+    <!-- Yüzen Menü Butonu (Yeni Eklendi) -->
+    <a href="menu.php" 
+       title="Menümüzü İnceleyin"
+       class="fixed bottom-6 right-6 z-40 bg-yellow-500 hover:bg-yellow-600 text-black w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-transform duration-300 transform hover:scale-110">
+        <i class="fas fa-utensils fa-lg"></i>
+    </a>
+
+    <script>
+        // --- Mobil Menü Toggle Script'i ---
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            // İkonu değiştir (bars <-> times)
+            const icon = menuButton.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Menü linklerine tıklayınca menüyü kapat
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                // Eğer link bir sayfa içi # linki değilse (menu.php gibi) kapatmaya gerek yok,
+                // ama mobil görünümde tutarlılık için kapatıyoruz.
+                mobileMenu.classList.add('hidden');
+                const icon = menuButton.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+
+        // --- WhatsApp Rezervasyon Script'i ---
+        const reservationForm = document.getElementById('reservationForm');
+
+        reservationForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Formun normal gönderimini engelle
+
+            // LÜTFEN BURADAKİ TELEFON NUMARASINI KENDİ WHATSAPP İŞLETME NUMARANIZLA DEĞİŞTİRİN
+            const restaurantWhatsAppNumber = "905052947900"; // Ülke koduyla birlikte (Örn: 905XXXXXXXXX)
+
+            // Form verilerini al
+            const name = document.getElementById('res-name').value;
+            const phone = document.getElementById('res-phone').value;
+            const guests = document.getElementById('res-guests').value;
+            const date = document.getElementById('res-date').value;
+            const time = document.getElementById('res-time').value;
+            const notes = document.getElementById('res-notes').value;
+
+            // WhatsApp için mesajı formatla (İsteğiniz üzerine: "içeriği aynen kopyalasın")
+            let message = "--- YENİ REZERVASYON TALEBİ ---\n\n";
+            message += `Ad Soyad: ${name}\n`;
+            message += `Telefon: ${phone}\n`;
+            message += `Kişi Sayısı: ${guests}\n`;
+            message += `Tarih: ${date}\n`;
+            message += `Saat: ${time}\n\n`;
+            
+            if (notes) {
+                message += `Müşteri Notu: ${notes}\n`;
+            }
+            message += "\nLütfen rezervasyon talebini onaylayınız.";
+
+            // URL uyumlu hale getir (boşlukları %20 vb. yapar)
+            const encodedMessage = encodeURIComponent(message);
+
+            // WhatsApp linkini oluştur
+            const whatsappURL = `https://wa.me/${restaurantWhatsAppNumber}?text=${encodedMessage}`;
+
+            // Yeni sekmede WhatsApp'ı aç
+            window.open(whatsappURL, '_blank');
+        });
+
+        // Tarih inputu için minimum tarihi bugünden başlat
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('res-date').setAttribute('min', today);
+
+        // --- İletişim Formu için Basit Gönderim Geri Bildirimi ---
+        // Not: Bu form veriyi bir sunucuya GÖNDERMEZ. 
+        // Sadece kullanıcıya bir geri bildirim gösterir.
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            
+            // Orijinal metni kaydet
+            const originalButtonText = submitButton.innerHTML;
+            
+            // Geri bildirim göster
+            submitButton.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Mesajınız Alındı!';
+            submitButton.classList.remove('bg-yellow-500', 'hover:bg-yellow-600'); // Renk güncellendi
+            submitButton.classList.add('bg-green-500'); // Başarı rengi
+            submitButton.disabled = true;
+            
+            // Formu temizle
+            contactForm.reset();
+
+            // 2 saniye sonra butonu eski haline getir
+            setTimeout(() => {
+                submitButton.innerHTML = originalButtonText;
+                submitButton.classList.add('bg-yellow-500', 'hover:bg-yellow-600'); // Renk güncellendi
+                submitButton.classList.remove('bg-green-500');
+                submitButton.disabled = false;
+            }, 3000);
+        });
+
+    </script>
+
+</body>
+</html>
+
